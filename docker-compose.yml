@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./ChatServer
+      dockerfile: Dockerfile
+    ports:
+      - "7891:7891"
+    networks:
+      - chatnet 
+networks:
+  chatnet:
