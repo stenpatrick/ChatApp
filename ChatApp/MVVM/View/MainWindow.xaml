@@ -3,38 +3,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChatApp" xmlns:viewmodel="clr-namespace:ChatApp.MVVM.ViewModel"
+        xmlns:local="clr-namespace:ChatApp"
+        xmlns:viewModel="clr-namespace:ChatApp.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="488" Width="843">
+
     <Window.DataContext>
-        <viewmodel:MainViewModel/>
+        <viewModel:MainViewModel />
     </Window.DataContext>
-    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
-            <ColumnDefinition/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <DockPanel>
             <TextBox Height="25"
-                       DockPanel.Dock="Top"
-                       Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                     DockPanel.Dock="Top"
+                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Height="25"
-                       DockPanel.Dock="Top"
-                       Content="Connect"
+                    DockPanel.Dock="Top"
+                    Content="connect"
                     Command="{Binding ConnectToServerCommand}"/>
-            <ListView/>
+            <ListView ItemsSource="{Binding Users}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Username}"></TextBlock>
+                    </DataTemplate>
+
+                </ListView.ItemTemplate>
+
+
+            </ListView>
         </DockPanel>
 
         <StackPanel Grid.Column="1">
-            <ListView Height="380"/>
+            <ListView Height="380"
+                      ItemsSource="{Binding Messages}"/>
 
             <StackPanel Orientation="Horizontal">
                 <TextBox Height="55"
                          Width="545"
-                         VerticalAlignment="Center"/>
+                         VerticalContentAlignment="Center"
+                         Text="{Binding Message, UpdateSourceTrigger= PropertyChanged}"/>
                 <Button Width="55"
-                        Content="Send"/>
+                        Content="Send"
+                        Command="{Binding SendMessageCommand}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

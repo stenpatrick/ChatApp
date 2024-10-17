@@ -1,38 +1,30 @@
 ﻿using System.Windows.Input;
 
-namespace ChatClient.MVM.Core
+namespace ChatApp.MVVM.Core;
 
+public class RelayCommand : ICommand
 {
+    private Action<object> _execute;
+    private Func<object, bool> _canExecute;
 
-    class RelayCommand : ICommand
+    public event EventHandler CanExecuteChanged
     {
-        private Action<object> execute;
-        private Func<object, bool> canExecute;
+        add { CommandManager.RequerySuggested += value; }
+        remove { CommandManager.RequerySuggested += value; }
+    }
+    public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+    {
+        this._execute = execute;
+        this._canExecute = canExecute;
+    }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+    public bool CanExecute(object parameter)
+    {
+        return this._canExecute == null || this._canExecute(parameter);
+    }
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-        {
-            this.execute = execute;
-            this.canExecute = canExecute;
-        }
-
-
-
-        public bool CanExecute(object parameter)
-        {
-            return this.canExecute == null || this.canExecute(parameter);
-        }
-
-
-
-        public void Execute(object parameter)
-        {
-            this.execute(parameter);
-        }
+    public void Execute(object parameter)
+    {
+        this._execute(parameter);
     }
 }
