@@ -8,4 +8,4 @@ FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app/out ./
 EXPOSE 7891
-ENTRYPOINT ["dotnet", "ChatServer.dll"]
+ENTRYPOINT ["dotnet", "ChatAppCli.dll"]

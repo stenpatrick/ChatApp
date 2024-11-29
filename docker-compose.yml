@@ -1,13 +1,32 @@
 version: '3.8'
 
 services:
-  server:
+  chatserver:
     build:
       context: ./ChatServer
       dockerfile: Dockerfile
     ports:
       - "7891:7891"
     networks:
-      - chatnet 
+      - chat-network
+    container_name: chatserver
+
+  chatappcli:
+    build:
+      context: ./ChatAppCli
+      dockerfile: Dockerfile
+    ports:
+      - "7892:7891"
+    networks:
+      - chat-network
+    depends_on:
+      - chatserver
+    stdin_open: true
+    tty: true
+    environment:
+      - USER_ID=user_1
+    restart: unless-stopped
+
 networks:
-  chatnet:
+  chat-network:
+    driver: bridge
