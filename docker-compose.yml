@@ -27,6 +27,22 @@ services:
       - USER_ID=user_1
     restart: unless-stopped
 
+  chatappcli1:
+    build:
+      context: ./ChatAppCli
+      dockerfile: Dockerfile
+    ports:
+      - "7893:7891"
+    networks:
+      - chat-network
+    depends_on:
+      - chatserver
+    stdin_open: true
+    tty: true
+    environment:
+      - USER_ID=user_2
+    restart: unless-stopped
+
 networks:
   chat-network:
     driver: bridge

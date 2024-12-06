@@ -8,4 +8,4 @@ FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app/out .
 EXPOSE 7891
-ENTRYPOINT ["/bin/sh", "-c", "export USER_ID=$(hostname) && dotnet ChatAppCli.dll"]
+ENTRYPOINT ["dotnet", "ChatAppCli.dll"]

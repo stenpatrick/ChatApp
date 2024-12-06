@@ -1,4 +1,4 @@
-﻿using ChatAppCli.Net.IO;
+﻿﻿using ChatAppCli.Net.IO;
 using ChatAppCli;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
@@ -22,7 +22,17 @@ class Program
         while (true)
         {
             message = Console.ReadLine();
-            input.SendMessage(message);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                input.SendMessage(message);
+            }
+            else
+            {
+                Console.WriteLine("Message cannot be empty. Please try again.");
+            }
         }
+
+
+
     }
 }

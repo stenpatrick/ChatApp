@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -21,24 +21,35 @@ namespace ChatAppCli
             _client = new TcpClient();
         }
 
-        public void ConnectToServer(string username)
+        public bool ConnectToServer(string username)
         {
-            if (!_client.Connected)
+            try
             {
-                _client.Connect("127.0.0.1", 7891);
-                PacketReader = new PacketReader(_client.GetStream());
-
-                ReadPackets();
-                if (!string.IsNullOrEmpty(username))
+                if (!_client.Connected)
                 {
-                    var connectPacket = new PacketBuilder();
-                    connectPacket.WriteOpCode(0);
-                    connectPacket.WriteMessage(username);
-                    _client.Client.Send(connectPacket.GetPacketBytes());
-                }
+                    _client.Connect("chatserver", 7891);
+                    PacketReader = new PacketReader(_client.GetStream());
 
+                    ReadPackets();
+                    if (!string.IsNullOrEmpty(username))
+                    {
+                        var connectPacket = new PacketBuilder();
+                        connectPacket.WriteOpCode(0);
+                        connectPacket.WriteMessage(username);
+                        _client.Client.Send(connectPacket.GetPacketBytes());
+                    }
+
+                    return true;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Connection failed: {ex.Message}");
+            }
+
+            return false;
         }
+
 
         private void ReadPackets()
         {
